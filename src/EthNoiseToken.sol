@@ -228,17 +228,16 @@ contract EthNoiseToken is ERC721{
             if(_checkCollision(v, registeredMappings[i])) revert("Collision with preexisting token");
         }
 
-        registeredMappings.push(v);
-
         // If not collision calculate value based on area
         uint256 area = uint256(_abs(xMax - xMin) * _abs(yMax - yMin));
 
         // If msg.value > cost of noise then 
-        require(msg.value >= area * 10^9, "Insufficient funds!");
+        require(msg.value / 10^9 >= area, "Insufficient funds!");
 
         tokenIdToBound[count] = v;
         tokenIdToAddress[count] = msg.sender;
         addressToTokenIds[msg.sender].push(count);
+        registeredMappings.push(v);
         count++;
     }
 }
